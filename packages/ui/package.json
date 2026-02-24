@@ -1,0 +1,103 @@
+{
+  "name": "vscode-watcloud-ui",
+  "displayName": "WATcloud for VS Code",
+  "description": "Connect to login node and bootstrap the environment",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsWelcome": [
+      {
+        "view": "watcloud-login",
+        "when": "!watcloud.config",
+        "contents": "SSH not configured. \n[Auto-generate SSH Config](command:watcloud.ssh)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "watcloud-explorer",
+          "title": "WATcloud",
+          "icon": "$(cloud)"
+        }
+      ]
+    },
+    "views": {
+      "watcloud-explorer": [
+        {
+          "id": "watcloud-login",
+          "name": "Login Nodes",
+          "when": "!watcloud.remote",
+          "icon": ""
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "watcloud.refreshLogin",
+        "title": "Refresh Login Nodes",
+        "category": "WATcloud",
+        "when": "!watcloud.remote",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "watcloud.ssh",
+        "title": "Auto-generate SSH Config",
+        "category": "WATcloud",
+        "when": "!watcloud.remote",
+        "icon": "$(add)"
+      },
+      {
+        "command": "watcloud.connect",
+        "title": "Connect to Node",
+        "category": "WATcloud",
+        "when": "!watcloud.remote",
+        "icon": "$(remote-explorer)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "watcloud.refreshLogin",
+          "when": "view == watcloud-login",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "watcloud.ssh",
+          "when": "view == watcloud-login && viewItem == loginNodeUnconfigured",
+          "group": "inline"
+        },
+        {
+          "command": "watcloud.connect",
+          "when": "view == watcloud-login && viewItem == loginNodeConfigured",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        { "command": "watcloud.refreshLogin", "when": "!watcloud.remote" },
+        { "command": "watcloud.connect", "when": "!watcloud.remote" },
+        { "command": "watcloud.ssh", "when": "!watcloud.remote" }
+      ]
+    }
+  },
+  "extensionDependencies": ["ms-vscode-remote.remote-ssh"],
+  "extensionKind": ["ui"],
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/node": "22.x",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npx vsce package --no-dependencies",
+    "test": "vscode-test"
+  }
+}

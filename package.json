@@ -1,0 +1,30 @@
+{
+  "name": "vscode-watcloud",
+  "version": "0.0.1",
+  "private": true,
+  "description": "WATcloud for VS Code",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "compile": "npm run compile -w vscode-watcloud-ui && npm run compile -w vscode-watcloud-workspace",
+    "compile:ui": "npm run compile -w vscode-watcloud-ui",
+    "compile:workspace": "npm run compile -w vscode-watcloud-workspace",
+    "watch": "npm run watch -w vscode-watcloud-ui & npm run watch -w vscode-watcloud-workspace",
+    "package": "npm run package -w vscode-watcloud-ui && npm run package -w vscode-watcloud-workspace",
+    "package:ui": "npm run package -w vscode-watcloud-ui",
+    "package:workspace": "npm run package -w vscode-watcloud-workspace",
+    "install": "code --install-extension packages/ui/vscode-watcloud-ui-*.vsix && code --install-extension packages/workspace/vscode-watcloud-workspace-*.vsix"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.109.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.2.1",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
+  }
+}

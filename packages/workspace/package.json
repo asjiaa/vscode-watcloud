@@ -1,0 +1,70 @@
+{
+  "name": "vscode-watcloud-workspace",
+  "displayName": "WATcloud Remote",
+  "description": "See basic cluster status and generate job commands",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "watcloud-explorer": [
+        {
+          "id": "watcloud-compute",
+          "name": "Compute Nodes",
+          "when": "watcloud.remote",
+          "icon": ""
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "watcloud.refreshCompute",
+        "title": "Refresh Compute Nodes",
+        "category": "WATcloud",
+        "when": "watcloud.remote",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "watcloud.job",
+        "title": "Start Job",
+        "when": "watcloud.remote",
+        "category": "WATcloud",
+        "icon": "$(play)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "watcloud.refreshCompute",
+          "when": "view == watcloud-compute",
+          "group": "navigation"
+        },
+        {
+          "command": "watcloud.job",
+          "when": "view == watcloud-compute",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        { "command": "watcloud.job", "when": "watcloud.remote" },
+        { "command": "watcloud.refreshCompute", "when": "watcloud.remote" }
+      ]
+    }
+  },
+  "extensionKind": ["workspace"],
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/node": "22.x",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npx vsce package --no-dependencies"
+  }
+}
