@@ -3,7 +3,6 @@ import * as cp from 'child_process'
 export interface ComputeNode {
     name: string
     state: string
-    partition: string
 }
 
 export class SlurmService {
@@ -19,7 +18,6 @@ export class SlurmService {
                         const parts = line.trim().split(/\s+/)
                         return {
                             name: parts[0],
-                            partition: parts[2].replace('*', ''),
                             state: parts[3].replace('*', '')
                         }
                     })

@@ -20,23 +20,20 @@ export class ComputeProvider implements vscode.TreeDataProvider<ComputeItem> {
                 return [new ComputeItem('No compute nodes found', vscode.TreeItemCollapsibleState.None, 'empty')]
             }
 
-            const partitions = Array.from(new Set(nodes.map(n => n.partition)))
-            return partitions.map(p => new ComputeItem(
-                p,
-                vscode.TreeItemCollapsibleState.Collapsed,
-                'partition',
-                nodes.filter(n => n.partition === p)
-            ))
-        }
-
-        if (element.contextValue === 'partition') {
-            return element.nodes!.map(n => new ComputeItem(
-                n.name,
-                vscode.TreeItemCollapsibleState.None,
-                'node',
-                undefined,
-                n.state
-            ))
+            const seen = new Set<string>()
+            return nodes
+                .filter(n => {
+                    if (seen.has(n.name)) return false
+                    seen.add(n.name)
+                    return true
+                })
+                .map(n => new ComputeItem(
+                    n.name,
+                    vscode.TreeItemCollapsibleState.None,
+                    'node',
+                    undefined,
+                    n.state
+                ))
         }
 
         return []
