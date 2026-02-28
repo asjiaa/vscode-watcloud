@@ -10,7 +10,7 @@ export class SshConfigService {
         if (!fs.existsSync(this.config)) return false
         const content = fs.readFileSync(this.config, 'utf-8')
         const check = (h: string) =>
-            new RegExp(`^Host\\s+${h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'm').test(content)
+            new RegExp(`^Host\\s+(?:[^\\n]*\\s)?${h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\s|$)`, 'm').test(content)
         return host ? check(host) : this.nodes.some(check)
     }
 
