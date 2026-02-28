@@ -34,8 +34,8 @@ export async function generateSshCommand(node?: string) {
     if (!identityFile) return
 
     try {
-        SshConfigService.generate(host, user, identityFile)
-        vscode.window.showInformationMessage(`Auto-generated new SSH config entry for ${host}`)
+        const config = SshConfigService.generate(host, user, identityFile)
+        vscode.window.showInformationMessage(`Auto-generated new SSH config entry for ${host} in ${config}`)
         vscode.commands.executeCommand('setContext', 'watcloud.config', true)
     } catch (error) {
         vscode.window.showErrorMessage(`${error}`)

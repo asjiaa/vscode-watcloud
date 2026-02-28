@@ -14,7 +14,7 @@ export class SshConfigService {
         return host ? check(host) : this.nodes.some(check)
     }
 
-    static generate(host: string, user: string, identityFile: string): void {
+    static generate(host: string, user: string, identityFile: string): string {
         let content = ''
         if (fs.existsSync(this.config)) {
             content = fs.readFileSync(this.config, 'utf-8')
@@ -22,6 +22,7 @@ export class SshConfigService {
         const prefix = content.length > 0 ? '\n'.repeat(2 - (content.match(/\n*$/)?.[0].length ?? 0)).slice(0, 2) : ''
         const entry = `${prefix}Host ${host}\n  HostName ${host}.ext.watonomous.ca\n  User ${user}\n  IdentityFile ${identityFile}\n`
         fs.appendFileSync(this.config, entry, { mode: 0o600 })
+        return this.config.replace(os.homedir(), '~')
     }
 
     static validate(filepath: string): string | undefined {
