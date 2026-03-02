@@ -86,7 +86,6 @@
       ]
     }
   },
-  "extensionDependencies": ["ms-vscode-remote.remote-ssh"],
   "extensionKind": ["ui"],
   "devDependencies": {
     "@types/vscode": "^1.109.0",

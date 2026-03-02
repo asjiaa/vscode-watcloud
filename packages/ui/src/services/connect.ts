@@ -21,23 +21,6 @@ export class ConnectService {
     }
 
     static async connect(host: string): Promise<void> {
-        const ext = vscode.extensions.getExtension('ms-vscode-remote.remote-ssh')
-
-        if (!ext) {
-            const install = await vscode.window.showErrorMessage(
-                'Remote - SSH extension is required to connect',
-                'Install'
-            )
-
-            if (install) {
-                vscode.commands.executeCommand(
-                    'workbench.extensions.installExtension',
-                    'ms-vscode-remote.remote-ssh'
-                )
-            }
-            return
-        }
-
         const uri = vscode.Uri.parse(`vscode-remote://ssh-remote+${host}/`)
 
         await vscode.commands.executeCommand(

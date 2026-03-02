@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
+import { TunnelService } from '../services/tunnel'
 
-export async function startJobCommand() {
+export async function startJobCommand(context: vscode.ExtensionContext) {
     const cpus = await vscode.window.showInputBox({
         prompt: 'CPU',
         placeHolder: 'Request number of CPUs per task',
@@ -69,20 +70,16 @@ export async function startJobCommand() {
     })
     if (time === undefined) return
 
-    const flags: string[] = ['srun']
+    const flags: string[] = []
 
-    if (cpus) flags.push(`--cpus-per-task ${cpus}`)
-    if (mem) flags.push(`--mem ${mem}G`)
-    if (gres.length > 0) flags.push(`--gres ${gres.join(',')}`)
+    if (cpus) flags.push('--cpus-per-task', cpus)
+    if (mem) flags.push('--mem', `${mem}G`)
+    if (gres.length > 0) flags.push('--gres', gres.join(','))
 
     if (time) {
         const [h, m, s] = time.split(':').map(v => v.padStart(2, '0'))
-        flags.push(`--time ${h}:${m}:${s}`)
+        flags.push('--time', `${h}:${m}:${s}`)
     }
 
-    flags.push('--pty bash')
-
-    const terminal = vscode.window.activeTerminal || vscode.window.createTerminal()
-    terminal.show()
-    terminal.sendText(flags.join(' '), false)
+    await TunnelService.start(flags, context)
 }

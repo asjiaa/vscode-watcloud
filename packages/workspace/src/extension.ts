@@ -2,6 +2,7 @@ import * as vscode from 'vscode'
 import { ComputeProvider } from './views/compute'
 import { SlurmService } from './services/slurm'
 import { startJobCommand } from './commands/job'
+import { TunnelService } from './services/tunnel'
 
 export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.executeCommand('setContext', 'watcloud.remote', vscode.env.remoteName === 'ssh-remote')
@@ -23,11 +24,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.commands.registerCommand('watcloud.job', async () => {
-            await startJobCommand()
+            await startJobCommand(context)
         })
     )
 
     computeProvider.refresh()
 }
 
-export function deactivate() {}
+export function deactivate() {
+    TunnelService.stop()
+}
